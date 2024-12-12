@@ -1,5 +1,3 @@
-# readme
-
 # Introductory
 
 This repository is used as my note while studying skills such as one-chip computer and neural network.
