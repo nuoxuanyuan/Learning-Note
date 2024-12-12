@@ -52,7 +52,7 @@ Today they still used by most of the microcontrollers because of their high spee
 
 When we evaluate the performance of a microcontroller, the size of it’s RAM is always an import criteria. It’s same as the running memory of computer. And the stack is saved on it when the program running.
 
-### 1.2 Read-Only Memory {#s1_1_2}
+### 1.2 Read-Only Memory <a id="s1_1_2"></a>
 
 As we know, the data will lost if the power goes out. This made too many trouble to programmers in that time. So people devise a new memory which can hold data while there are no electricity. But as a price, this storage can only be read but can’t be written twice. The program usually has been written down when factor generate it. So this memory is called Read-Only Memory(ROM).
 
@@ -62,6 +62,6 @@ In this way, we can write to the store but only once chance. So it’s still not
 
 Today, flash used by many microcontrollers as a ROM because it can be erased fast and is convenient to write and read. But it’s read/write speed is still slower than RAM. So we usually put our programs on the flash, but the program will put it’s variants into a stack and hold by RAM.
 
-## 2.General Purpose Inputs and Outputs {#s1_2}
+## 2.General Purpose Inputs and Outputs <a id="s1_2"></a>
 
 # Upgrade Waiting
