@@ -21,7 +21,8 @@ Telegram: @nuoxuanyuan
         - [1.2 Read-Only Memory](#s1_1_2)
     - [2.General Purpose Inputs and Outputs](#s1_2)
 
-# STM32 and one-chip computer {#s1}
+<a id="s1"></a>
+# STM32 and one-chip computer
 
 As it’s whole name called single-chip programmable computer, The one-chip computer is just a much smaller computer.
 It has the basic structure which the computer also has.
@@ -33,11 +34,12 @@ Because it is common for both input and output, it is also called General Purpos
 
 Let’s see more details of the micricontroller.
 
-## 1.Kind of memory {#s1_1}
+<a id="s1_1"></a>
+## 1.Kind of memory
 
 To use circuits to finish some algorithmic, first we need digital circuits to remember our date.
 
-### 1.1 Random Access Memory {#s1_1_1}
+### 1.1 Random Access Memory
 
 If you like my note, you can give me a star.
 Or if you are learning these too, I would be happy if we can have a discussion.
