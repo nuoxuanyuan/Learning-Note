@@ -63,7 +63,15 @@ Today, flash used by many microcontrollers as a ROM because it can be erased fas
 ## 2.General Purpose Inputs and Outputs <a id="s1_2"></a>
 General Purpose Inputs and Outputs is usually called GPIO. There are nothing special to explain it as the basic inputs and outputs of a one-chip computer. 
 
-As outputs, it can output a high level equal to the power supply potential or a low level with the same potential to ground. As we know, STM32 and many one-chip computets have not only one model to output and input. 
+As outputs, it can output a high level equal to the power supply potential or a low level with the same potential to ground. As we know, STM32 and many one-chip computers have not only one model to output and input. 
 
-The output model has push-pull output, open-drain output, mutiplexed push-pull output, and so on. If we use the push-pull mode and put a high level, the output port does get a high level. But if we use the open-drain mode to do that, we will get nothing from the port, neither high or low level but a high resistance stage. Because tje high level output of a one-chip computer is just a high resistance stage. We need to external pull-up register to get a real high level. The push-pull mode can do that directly brecause it has 
+The output model has push-pull output, open-drain output, multiplexed push-pull output, and so on. If we use the push-pull mode and put a high level, the output port does get a high level. But if we use the open-drain mode to do that, we will get nothing from the port, neither high or low level but a high resistance stage. Because the high level output of a one-chip computer is just a high resistance stage. We need to external pull-up register to get a real high level. The push-pull mode can do that directly because it already has pull-up register in it's inner circuit. But the other mode need you to use pull-up register by yourself.
+
+The input mode has floating input and open-drain input. When we set the GPIO as open-drain input, we will get a high resistance stage at the port too. With the input mode, ont-chip computer can read the potentiometric from the port. It will get 1 if it is high level and 0 with low level.
+
+There is a interesting question I have got from online. Look at the following circuit. If we use output mode of GPIO to control this buzzer, no matter low level and high level will make the R1 has a 2.5v or 0.85v divider. This will allow several hundred microamps of current at the base of the triode, causing the triode to conduct. This will cause the buzzer to operate no matter what.  
+
+![](/img/GPIO.png "")
+
+But how do we turn it off? Maybe you will say if we have the microcontroller using a 5v power supply, and then the high level output will turn it off. To what if other peripherals of the microcontroler have a maximum withstand voltage of less than 5v? The best answer is to use the open-drain mode. When we output a high level, the port will at high-resistance stage and R1 has no divider, and the buzzer will not work. R1 will have a 2.5v divider and the buzzer will begin to work when we output a low level.
 # Upgrade Waiting
