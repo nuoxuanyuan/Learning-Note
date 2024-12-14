@@ -7,6 +7,9 @@ So this reposity is also a chance to improve it.
 If you found any grammatical error, I will thank you for correcting me.
 You can connect me by email: jinhao@stu.ouc.edu.cn
 
+If you like my note, you can give me a star.
+Or if you are learning these too, I would be happy if we can have a discussion.
+
 Again, my email: jinhao@stu.ouc.edu.cn
 
 Telegram: @nuoxuanyuan
@@ -39,9 +42,6 @@ To use circuits to finish some algorithmic, first we need digital circuits to re
 
 ### 1.1 Random Access Memory <a id="s1_1_1"></a>
 
-If you like my note, you can give me a star.
-Or if you are learning these too, I would be happy if we can have a discussion.
-
 In the beginning, people use triggers to make registers.
 But these registers can only keep datas when there is electricity.
 All of the date will lost when the power goes out.
@@ -61,5 +61,9 @@ In this way, we can write to the store but only once chance. So it’s still not
 Today, flash used by many microcontrollers as a ROM because it can be erased fast and is convenient to write and read. But it’s read/write speed is still slower than RAM. So we usually put our programs on the flash, but the program will put it’s variants into a stack and hold by RAM.
 
 ## 2.General Purpose Inputs and Outputs <a id="s1_2"></a>
+General Purpose Inputs and Outputs is usually called GPIO. There are nothing special to explain it as the basic inputs and outputs of a one-chip computer. 
 
+As outputs, it can output a high level equal to the power supply potential or a low level with the same potential to ground. As we know, STM32 and many one-chip computets have not only one model to output and input. 
+
+The output model has push-pull output, open-drain output, mutiplexed push-pull output, and so on. If we use the push-pull mode and put a high level, the output port does get a high level. But if we use the open-drain mode to do that, we will get nothing from the port, neither high or low level but a high resistance stage. Because tje high level output of a one-chip computer is just a high resistance stage. We need to external pull-up register to get a real high level. The push-pull mode can do that directly brecause it has 
 # Upgrade Waiting
