@@ -1,42 +1,35 @@
 # Introductory
 
-This repository is used as my note while studying skills such as one-chip computer and neural network.
-I’m just an undergrad student in China and English is a little pool.
-So this reposity is also a chance to improve it.
+This repository is used as my note while studying skills such as one-chip computer and neural network.I’m just an undergrad student in China and English is a little pool.So this reposity is also a chance to improve it.
 
-If you found any grammatical error, I will thank you for correcting me.
-You can connect me by email: jinhao@stu.ouc.edu.cn
+If you found any grammatical error, I will thank you for correcting me.You can connect me by email: jinhao@stu.ouc.edu.cn
 
-If you like my note, you can give me a star.
-Or if you are learning these too, I would be happy if we can have a discussion.
+If you like my note, you can give me a star.Or if you are learning these too, I would be happy if we can have a discussion.
 
 Again, my email: jinhao@stu.ouc.edu.cn
 
 Telegram: @nuoxuanyuan
 
-# Contents
+# Contents <a id="home"> </a>
 
 - [STM32 and one-chip computer](#s1)
-    - [1.Kind of memory](#s1_1)
-        - [1.1 Random Access Memory](#s1_1_1)
-        - [1.2 Read-Only Memory](#s1_1_2)
-    - [2.General Purpose Inputs and Outputs](#s1_2)
+  - [1.Kind of memory](#s1_1)
+    - [1.1 Random Access Memory ](#s1_1_1)
+    - [1.2 Read-Only Memory ](#s1_1_2)
+  - [2.General Purpose Inputs and Outputs ](#s1_2)
+  - [3. External Interrupt ](#s1_3)
+- [Upgrade Waiting](#sn)
 
-<a id="s1"></a>
-# STM32 and one-chip computer
+# STM32 and one-chip computer <a id="s1"></a>
 
-As it’s whole name called single-chip programmable computer, The one-chip computer is just a much smaller computer.
-It has the basic structure which the computer also has.
-But in different, the main frequency of the microcontroller is lower,
-and it’s memory is also so low that it can only store some simple programs.
-It delete the computer’s keyboard, keypads, screen, and so on.
-As an alternative, the microcontroller add many wires as it’s input and output.
-Because it is common for both input and output, it is also called General Purpose Inputs and Outputs(GPIO).
+As it’s whole name called single-chip programmable computer, The one-chip computer is just a much smaller computer.It has the basic structure which the computer also has.
+But in different, the main frequency of the microcontroller is lower,and it’s memory is also so low that it can only store some simple programs.It delete the computer’s keyboard, keypads, screen, and so on.As an alternative, the microcontroller add many wires as it’s input and output.Because it is common for both input and output, it is also called General Purpose Inputs and Outputs(GPIO).
 
 Let’s see more details of the micricontroller.
 
-<a id="s1_1"></a>
-## 1.Kind of memory
+[Return Contents](#home)
+
+## 1.Kind of memory <a id="s1_1"></a>
 
 To use circuits to finish some algorithmic, first we need digital circuits to remember our date.
 
@@ -50,6 +43,8 @@ Today they still used by most of the microcontrollers because of their high spee
 
 When we evaluate the performance of a microcontroller, the size of it’s RAM is always an import criteria. It’s same as the running memory of computer. And the stack is saved on it when the program running.
 
+[Return Contents](#home)
+
 ### 1.2 Read-Only Memory <a id="s1_1_2"></a>
 
 As we know, the data will lost if the power goes out. This made too many trouble to programmers in that time. So people devise a new memory which can hold data while there are no electricity. But as a price, this storage can only be read but can’t be written twice. The program usually has been written down when factor generate it. So this memory is called Read-Only Memory(ROM).
@@ -59,6 +54,8 @@ Although this store can keep data without power, it can’t be written as we wan
 In this way, we can write to the store but only once chance. So it’s still not enough. Shortly after, engineers devise many ROM can be written many time by some special ways. For example, Erasable Programmable Read-Only Memory(EPROM) can be erased by UV, Electrically-Erasable Programmable Read-Only Memory(EEPROM also E2PROM) can be erased by electric. With these erasable ROM, the memory can be write many times.
 
 Today, flash used by many microcontrollers as a ROM because it can be erased fast and is convenient to write and read. But it’s read/write speed is still slower than RAM. So we usually put our programs on the flash, but the program will put it’s variants into a stack and hold by RAM.
+
+[Return Contents](#home)
 
 ## 2.General Purpose Inputs and Outputs <a id="s1_2"></a>
 General Purpose Inputs and Outputs is usually called GPIO. There are nothing special to explain it as the basic inputs and outputs of a one-chip computer. 
@@ -74,4 +71,33 @@ There is a interesting question I have got from online. Look at the following ci
 ![](/img/GPIO.png "")
 
 But how do we turn it off? Maybe you will say if we have the microcontroller using a 5v power supply, and then the high level output will turn it off. To what if other peripherals of the microcontroler have a maximum withstand voltage of less than 5v? The best answer is to use the open-drain mode. When we output a high level, the port will at high-resistance stage and R1 has no divider, and the buzzer will not work. R1 will have a 2.5v divider and the buzzer will begin to work when we output a low level.
-# Upgrade Waiting
+
+[Return Contents](#home)
+
+## 3. External Interrupt <a id="s1_3"></a>
+We always use a dead loop to prevent the microcontroller from doing nothing, when we write a program to control it. But in many times, there will be some other things it must to do while running the main program. Such as switching to constant light by pressing a button when the running light is in operation. This is when an external interrupt will fulfill our needs.
+
+The external interrupt allow the main program can be interrupted at any time. When the port satisfies the external interrupt condition, the main function will pause and run the interrupt instruction directly. After the execution of the interrupt function is finished, the program returns to the main function to continue running.
+
+Interrupts have a priority, which is divided into preemption priority and response priority. When multiple interrupt arrive at different times, the interrupt with the earliest arrival time is prioritized. When different external interrupts arrive at the same time, priority is given to executing the interrupt with a high response priority. If another interrupt occurs during the execution of an interrupt, the new interrupt is executed if the interrupt has a higher preemption priority, and vice versa, waiting for the current interrupt to finish execution before executing the new interrupt.
+
+In this note, we will use the C standard library of the STM32F103C8 as an example.
+
+The external Interrupt on STM32 is also called EXTI. We must set the output mode as floating input mode and use the general GPIO clock and AFIO clock before we use the EXTI on STM32. For example:
+`RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE);`
+
+Then we should map the port to the external interrupt. Here we use PA0 and EXTI0:
+`GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource0);`
+
+We can set the line after these work:
+`EXTI_InitStructure.EXTI_Line = EXTI_Line0;`
+`EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;`
+`EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; // 下降沿触发`
+`EXTI_InitStructure.EXTI_LineCmd = ENABLE;`
+
+And then enable and init the EXTI:
+`EXTI_Init(&EXTI_InitStructure);`
+
+[Return Contents](#home)
+
+# Updata Waiting <a id="sn"> </a>
