@@ -17,7 +17,8 @@ Telegram: @nuoxuanyuan
     - [1.1 Random Access Memory ](#s1_1_1)
     - [1.2 Read-Only Memory ](#s1_1_2)
   - [2.General Purpose Inputs and Outputs ](#s1_2)
-  - [3. External Interrupt ](#s1_3)
+  - [3. External Interrupt](#s1_3)
+  - [4. Internal Interrupt and Timers](#s1_4)
 - [Upgrade Waiting](#sn)
 
 # STM32 and one-chip computer <a id="s1"></a>
@@ -92,11 +93,35 @@ Then we should map the port to the external interrupt. Here we use PA0 and EXTI0
 We can set the line after these work:
 `EXTI_InitStructure.EXTI_Line = EXTI_Line0;`
 `EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;`
-`EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; // 下降沿触发`
+`EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;`
 `EXTI_InitStructure.EXTI_LineCmd = ENABLE;`
 
 And then enable and init the EXTI:
 `EXTI_Init(&EXTI_InitStructure);`
+
+Finally, we need to use the NVIC of STM32 to set up it's priority:
+`NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;`
+`NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;`
+`NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;`
+`NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;`
+
+And don't forget to init it: 
+`NVIC_Init(&NVIC_InitStructure);`
+
+Now, the microcontroller can get the interrupt single, but how can it to run the interrupt task? In acturely, there is a interrupt function to do that. You can define the function as followed:
+`void EXTI0_IRQHandler(void) {}`
+
+In this example, the function is EXTI0. This name is must as same as the line of external interrupt line which we have setted just now. Then, the mircocontroller will pause the main function and run the interrupt function when the interrupt arrive.
+
+As we know, each GPIO of STM32 has an external inpterrupt line and the C standard library has 18 EXTI functions. So the external interrupt is always enough on STM32. But other microcontroller maybe not so lucky as STM32, such as ARM C51 which only has 2 external interrupt line. What should we do when we need more interrupt but only be allowed to use these mirocontroller? In fact, we can repalce external interrupt with internal interrupt. We will discuss it in next chapters.
+
+[Return Contents](#home)
+
+# Internal interrupt and Timers <a id="s1_4"></a>
+
+We can use delay function if we want to let the cpu to wait a few times. But this action will made the program in dead loop and can do nothing until finfish the wait. We can use.the timer to adress this issue. The timer in mircrocontroller can also be used as a register. It works by counting from one number to the other and counting at the same interval for each number. So it can be use for both Timers and Registers.
+
+The numner at the begining of the count is called the preloaded value and the number which the count terminates is called reload value.
 
 [Return Contents](#home)
 
