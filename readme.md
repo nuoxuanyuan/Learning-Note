@@ -21,6 +21,9 @@ Telegram: @nuoxuanyuan
   - [4.Internal Interrupt and Timers](#s1_4)
     - [4.1 The mains frequency of CPU](#s1_4_1)
     - [4.2 Extend EXTI and Timers](#s1_4_2)
+  - [5.Pulse-Width Modulation(PWM)](#s1_5)
+  - [6.Serial port](#s1_6)
+  - [7.Analog-to-digital converter(ADC) and Digital to analog converter(DAC)](#s1_7)
 - [Upgrade Waiting](#sn)
 
 # STM32 and one-chip computer <a id="s1"></a>
@@ -107,9 +110,39 @@ We have not only one method to overclock. For example, replacing the crystal wit
 
 We have said that the external interrupt can be exteded in last chapter. For example, we can set the interrupt period to 50 milliseconds or even less, and use this internal interrupt tp poll a specifil port instead of an external interrupt. By this method, even STC51 can have a dozen or more external interrupt.
 
-Nevertheless, each GPIO on STM32 has an EXTI but only has 4 Timers. It is very full to use the Timer to replace an EXTI. How should we do if we want more Timers? We have known that the Timer working by a oscillator. So we can connect a timer from the outside to the microcontroller, develop a timing cycle and let it every cycle to generate a pulse signal access to the external interrupt, then you can add a timer for the microcontroller. Ofen a timer circuit built on a 555 chip is a simple choice.
+Nevertheless, each GPIO on STM32 has an EXTI but only has 4 Timers. It is very full to use the Timer to replace an EXTI. How should we do if we want more Timers? We have known that the Timer working by a oscillator. So we can connect a timer from the outside to the microcontroller, develop a timing cycle and let it every cycle to generate a pulse signal access to the external interrupt, then you can add a timer for the microcontroller. Often a timer circuit built on a 555 chip is a simple choice.
 
 If you have use a button as input to a mircocontroller, you must know it need to delay a few milliseconds to prevent jittter. Here I won't tell you that you can use a Timer to replace the delay unless I'm stupid. But the mircocontroller cann't do anything while applicating the delay task. Is there an other method to to that? Yes! The STM32 has a tick-tocktimer called Systick. It is used to record the time of main frequency. Each time a tick is experienced(1 milliseconds), the value in the tick timer register is increased by one. So we can replace this delay by counting the number of ticks.
+
+[Return Contents](#home)
+
+## 5.Pulse-Width Modulation(PWM) <a id = "s1_5"></a>
+
+As it's name says, PWM is just a periodic square wave which we can control it's period and duty cycle. Firstly, we must know why we need PWM. The most common is hte lamp's induction dimming. We can change the brightness of the lamp by adjusting the input voltage. But this wouls cause a problem that when we change the voltage, the energy utilization of the lamp will change, and circuit energy consumption will be much be higher. So we always use a PWM to control a lamp's brightness. We can set the signal voltage is the voltage at which the lamp's energy is most efficiently utilized. This allow us to control the lights with a high frequency PWM, and change the lightness by dytu cycle.
+
+In addition, many motors require PWM drives, such as servo motors, stepper motors, brushless ESCs, and more. In summary, PWM signal has a wide range of use in circuity.
+
+Now, let's see how to generate a PWM signal by a microcontroller. It is very easy if you have learn the Timer. In fact, you can also generate with Timer and GPIO by yourself. [Here is an example about how to use a PWM with microcontroller.](./ExampleCode/PWM.c)
+
+[Return Contents](#home)
+
+## 6.Serial port<a id = "s1_6"></a>
+
+In many complex programs, only one microcontroller is not enough. But how could many microcontroller work on one task? How could each one know what to do next time? May be we can use a Timer to measure time and decided what to do. However, each Timer has an error, and it will make error after the programe running a long time. To address this issue, the microcontroller can correspond with each other to ensure synchronized task completion. 
+
+These communications method is called Seial. The most easy communications protocol is USART(Universal Synchronous/Asynchronous Receiver/Transmitter). It holds high when there is no information, and use a low level of more than one cycle as the start and termination signal for data transmission. During data transmission, data is sent in groups of 8 bits, with high levels as 1 and low levels as 0.
+
+USART is the most easy communications protocol, and it's also the slowest communication. To improve the speed of communication, there are also some other communications protocol, such as SPI(Serial Perripheral Interface) and IIC(Inter-Integrated Circuit, also called I2C). The max communication rate of these communication methods can reach 50Mbit/s. There disadvantage is also very obvious. When the transmission distance is too far(more than 1 meter), the communication clock will fail, and the communication will not work properly.
+
+[Here is an example to use it.](./ExampleCode/Serial.c)
+
+[Return Contents](#home)
+
+## 7.Analog-to-digital converter(ADC) and Digital to analog converter(DAC)<a id = "s1_7"></a>
+
+We have learn that a microcintroller's output is usually a high level equal to the power supply potential or a low level with a same potential to ground. But how could we just output a 2.7V potential or get the input potential? In many microcontroller, there is ADC and DAC to finish these task. It will compare the analog signal to the power supply potential and get a binary number, according to which we can determine the voltage value of analog signal or output the analog signal.
+
+The ADC is used to measure the potential of input analog signal, and the DAC is used to generate and output a analog signal. The accuracy of DACs and ADCs depends on the number of bits in the converter. [Here is an example to use it](./ExampleCode/ADC_DAC.c)
 
 [Return Contents](#home)
 
