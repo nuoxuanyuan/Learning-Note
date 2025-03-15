@@ -1,6 +1,6 @@
 # Introductory
 
-This repository is used as my note while studying skills such as one-chip computer and neural network. I’m just an undergrad student in China and English is a little pool. So this reposity is also a chance to improve it.
+This repository is used as my note while studying skills such as one-chip computer and neural network. I’m just an undergraduate student in China and English is a little pool. So this reposity is also a chance to improve it.
 
 If you found any grammatical error, I will thank you for correcting me. You can connect me by email: jinhao@stu.ouc.edu.cn
 
